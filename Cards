@@ -1,0 +1,9 @@
+package Cards.Kpop;
+
+import java.util.Collection;
+
+public interface Cards {
+    public boolean cadastraIdol(String nome, int dia, int mes);
+    public Collection<Idol> pesquisaIdols(int dia, int mes);
+    public boolean removeIdol(String nome);
+}
