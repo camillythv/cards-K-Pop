@@ -1,0 +1,66 @@
+package Cards.Kpop;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class CardsGUI extends JFrame {
+    JLabel linha1, linha2;
+    ImageIcon foto = new ImageIcon("C://Users//Camilly//Downloads//fotokpop.jpeg");
+    Cards cards = new CardsKpop();
+    JMenuBar barraDeMenu = new JMenuBar();
+
+    public CardsGUI() {
+        setTitle("CelebrityMatch: Encontre Ídolos com Aniversários Semelhantes");
+        setSize(800,600);
+        setLocation(150, 150);
+        setResizable(false);
+        setBackground(Color.black);
+        linha1 = new JLabel("CelebrityMatch", JLabel.CENTER);
+        linha1.setForeground(Color.gray);
+        linha1.setFont(new Font("Serif", Font.BOLD, 24));
+        linha2 = new JLabel(foto, JLabel.CENTER);
+        setLayout(new GridLayout(3, 1));
+        add(linha1);
+        add(linha2);
+        add(new JLabel());
+
+        JMenu menuCadastrar = new JMenu("Cadastrar");
+        JMenuItem menuCadastrarIdols = new JMenuItem("Cadastrar Idol");
+        menuCadastrar.add(menuCadastrarIdols);
+
+        JMenu menuPesquisar = new JMenu("Pesquisar");
+        JMenuItem menuPesquisarIdol = new JMenuItem("Pesquisar Idol");
+        menuPesquisar.add(menuPesquisarIdol);
+
+        JMenu menuRemover = new JMenu("Remover");
+        JMenuItem menuRemoverIdol = new JMenuItem("Remover Idol");
+        menuRemover.add(menuRemoverIdol);
+
+        menuPesquisarIdol.addActionListener(new CardsSearchController(cards,this));
+        menuRemoverIdol.addActionListener(new CardsRemoveController(cards,this));
+
+        menuCadastrarIdols.addActionListener((ae) -> {
+            String nome = JOptionPane.showInputDialog(this, "Qual o nome do Idol?");
+            int dia = Integer.parseInt(JOptionPane.showInputDialog(this, "Qual o dia do mês em que nasceu?"));
+            int mes = Integer.parseInt(JOptionPane.showInputDialog(this, "Qual o mês em que nasceu?"));
+            boolean cadastrou = cards.cadastraIdol(nome, dia, mes);
+            if (cadastrou) {
+                JOptionPane.showMessageDialog(this, "Idol cadastrado");
+            } else {
+                JOptionPane.showMessageDialog(this, "Idol não foi cadastrado. Verifique se já não existe");
+            }
+        });
+
+        barraDeMenu.add(menuCadastrar);
+        barraDeMenu.add(menuPesquisar);
+        barraDeMenu.add(menuRemover);
+
+        setJMenuBar(barraDeMenu); // Use setJMenuBar() para definir a barra de menu
+    }
+
+    public static void main(String[] args) {
+        JFrame janela = new CardsGUI();
+        janela.setVisible(true);
+        janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+}
