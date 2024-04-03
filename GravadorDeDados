@@ -1,0 +1,36 @@
+package Cards.Kpop;
+
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
+import static java.io.FileDescriptor.out;
+
+public class GravadorDeDados {
+    public static final String ARQUIVO_IDOLS = "idols.dat";
+
+    public HashMap<String, Idol> recuperarIdols() throws IOException {
+        ObjectInputStream in = null;
+        try {
+            in = new ObjectInputStream(new FileInputStream(ARQUIVO_IDOLS));
+            return (HashMap<String, Idol>) in.readObject();
+        } catch (Exception e) {
+            System.out.println("Não foi possível recuperar");
+            return null;
+        } finally {
+            if (in != null) {
+                in.close();
+            }
+        }
+    }
+
+    public void salvarIdols(Map<String, Idol> idols) throws IOException {
+        ObjectOutputStream out = null;
+        try {
+            out = new ObjectOutputStream(new FileOutputStream(ARQUIVO_IDOLS));
+            out.writeObject(idols);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new IOException("Erro ao salvar " + ARQUIVO_IDOLS);
+        }
+    }
+}
