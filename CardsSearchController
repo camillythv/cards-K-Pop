@@ -1,0 +1,36 @@
+package Cards.Kpop;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Collection;
+
+public class CardsSearchController implements ActionListener {
+    private Cards cards;
+    private JFrame janelaPrincipal;
+
+    public CardsSearchController(Cards cards, JFrame janela) {
+        this.cards = cards;
+        this.janelaPrincipal = janela;
+    }
+
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        int dia = Integer.parseInt(JOptionPane.showInputDialog(janelaPrincipal,
+                "Qual o dia do mês a ser pesquisado?"));
+        int mes = Integer.parseInt(JOptionPane.showInputDialog(janelaPrincipal,
+                "Qual o mês a pesquisar?"));
+        Collection<Idol> aniversario = cards.pesquisaIdols(dia, mes);
+        if (aniversario.size() > 0) {
+            JOptionPane.showMessageDialog(janelaPrincipal,
+                    "Idols encontrados:");
+            for (Idol i : aniversario) {
+                JOptionPane.showMessageDialog(janelaPrincipal, i.toString());
+            }
+        } else {
+            JOptionPane.showMessageDialog(janelaPrincipal,
+                    "Não foi encontrado nenhum idol com aniversário nesta data");
+        }
+    }
+}
