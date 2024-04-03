@@ -1,0 +1,63 @@
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+public class CardsKpop implements Cards {
+    private Map<String,Idol> idols;
+    private GravadorDeDados gravador = new GravadorDeDados();
+
+    public CardsKpop(){
+        this.idols = new HashMap<>();
+        recuperaDados();
+    }
+
+    public void salvarDados(){
+        try {
+            this.gravador.salvarIdols(this.idols);
+        } catch (Exception e){
+            System.err.println(e.getMessage());
+        }
+    }
+
+    public void recuperaDados() {
+        try {
+            this.idols = this.gravador.recuperarIdols();
+        } catch (IOException e){
+            System.err.println(e.getMessage());
+        }
+    }
+
+
+    @Override
+    public boolean cadastraIdol(String nome, int dia, int mes) {
+        if (!idols.containsKey(nome)){
+            this.idols.put(nome, new Idol(nome, dia, mes));
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    @Override
+    public Collection<Idol> pesquisaIdols(int dia, int mes) {
+        Collection<Idol> idolsAchados = new ArrayList<>();
+        for (Idol i : this.idols.values()){
+            if (i.getDiaAniversario() ==dia && i.getMesAniversario()==mes){
+                idolsAchados.add(i);
+            }
+        }
+        return idolsAchados;
+    }
+
+    @Override
+    public boolean removeIdol(String nome) {
+        if (this.idols.containsKey(nome)){
+            this.idols.remove(nome);
+            return true;
+        }else {
+            return false;
+        }
+    }
+}
